@@ -1,0 +1,33 @@
+@{
+    ViewData["Title"] = "Login";
+}
+<div class="flex min-h-[70vh] items-center justify-center">
+    <div class="w-full max-w-md rounded-xl border border-white/20 bg-white/90 p-8 shadow-lg backdrop-blur">
+        <h1 class="mb-4 text-center text-3xl font-bold text-maroon">Candidate Login</h1>
+        <form id="loginForm" class="space-y-4">
+            <input id="username" class="w-full rounded-lg border p-3" placeholder="Username" />
+            <input id="password" type="password" class="w-full rounded-lg border p-3" placeholder="Password" />
+            <button type="submit" class="w-full rounded-lg bg-maroon px-4 py-2 text-white hover:bg-[#650000] transition">Log In</button>
+        </form>
+    </div>
+</div>
+<script>
+    document.getElementById('loginForm').addEventListener('submit', async function (event) {
+        event.preventDefault();
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const response = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+        });
+        if (!response.ok) {
+            alert('Invalid credentials');
+            return;
+        }
+        const data = await response.json();
+        localStorage.setItem('authToken', data.token); 
+        localStorage.setItem('userId', data.user.id);
+        window.location.href = '/Home/Candidate';
+    });
+</script>

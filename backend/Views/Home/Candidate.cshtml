@@ -1,0 +1,85 @@
+@{
+    ViewData["Title"] = "Candidate Test";
+}
+<div class="mx-auto max-w-5xl rounded-2xl bg-white p-6 shadow-xl">
+    <h2 class="text-3xl font-bold text-maroon">Candidate Test</h2>
+    <div class="my-4 rounded-lg border p-4">
+        <p class="text-lg">Time Remaining: <span id="timeLabel" class="font-bold">15:00</span></p>
+        <div class="h-4 w-full rounded-full bg-gray-200"><div id="progressBar" class="h-full rounded-full bg-maroon" style="width:100%"></div></div>
+    </div>
+    <div class="grid gap-4 md:grid-cols-3">
+        <div class="md:col-span-1" id="questionList"></div>
+        <div class="md:col-span-2">
+            <div id="questionArea" class="mb-3 rounded-lg border p-4"></div>
+            <button id="submitButton" class="rounded-lg bg-gold px-4 py-2 font-semibold text-maroon">Submit Test</button>
+        </div>
+    </div>
+</div>
+<script>
+    const token = localStorage.getItem('authToken');
+    const userId = Number(localStorage.getItem('userId')) || 0;
+    const testId = 1;
+
+    const questions = [
+        { id: 1, type: 'MCQ', prompt: 'The capital of France?', choices: ['Paris', 'London', 'Berlin', 'Rome'] },
+        { id: 2, type: 'Coding', prompt: 'Write a function to reverse a string.', code: '' }
+    ];
+
+    const answers = [];
+    let activeIndex = 0;
+
+    function renderQuestion() {
+        const q = questions[activeIndex];
+        const area = document.getElementById('questionArea');
+        area.innerHTML = `<h3 class="text-xl font-semibold">${q.prompt}</h3>`;
+        if (q.type === 'MCQ') {
+            q.choices.forEach(c => {
+                const b = document.createElement('button');
+                b.className = 'mt-2 w-full rounded-lg border p-2 text-left hover:bg-gray-100';
+                b.textContent = c;
+                b.addEventListener('click', () => {
+                    answers[q.id] = c;
+                    document.querySelectorAll('#questionArea button').forEach(x => x.classList.remove('bg-maroon', 'text-white')); b.classList.add('bg-maroon', 'text-white');
+                });
+                area.appendChild(b);
+            });
+        } else {
+            area.innerHTML += '<div id="monaco" style="height:320px;border:1px solid #ddd;margin-top:10px"></div>';
+            require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.1/min/vs' } });
+            require(['vs/editor/editor.main'], function () {
+                const editor = monaco.editor.create(document.getElementById('monaco'), { value: q.code || '// start writing', language: 'javascript', theme: 'vs-dark' });
+                editor.onDidChangeModelContent(() => answers[q.id] = editor.getValue());
+            });
+        }
+    }
+
+    function renderQuestionList() {
+        const list = document.getElementById('questionList');
+        list.innerHTML = '';
+        questions.forEach((q, idx) => {
+            const button = document.createElement('button');
+            button.className = `mb-2 w-full rounded-lg p-3 text-left transition ${idx===activeIndex ? 'bg-maroon text-white':'bg-gray-100 hover:bg-gray-200'}`;
+            button.textContent = `${q.type} #${q.id}`;
+            button.addEventListener('click', () => { activeIndex = idx; renderQuestion(); renderQuestionList(); });
+            list.appendChild(button);
+        });
+    }
+
+    renderQuestionList();
+    renderQuestion();
+
+    let timeLeft = 900;
+    setInterval(()=>{
+        timeLeft = Math.max(timeLeft-1,0);
+        const minutes = Math.floor(timeLeft/60); const seconds = (timeLeft%60).toString().padStart(2,'0');
+        document.getElementById('timeLabel').textContent = `${minutes}:${seconds}`;
+        document.getElementById('progressBar').style.width = `${(timeLeft/900)*100}%`;
+    },1000);
+
+    document.getElementById('submitButton').addEventListener('click', async () => {
+        const payload = { candidateId: userId, testId, answers: Object.entries(answers).filter(x=>x[1]).map(([questionId, answer]) => ({ questionId: Number(questionId), candidateAnswer: answer })) };
+        const response = await fetch('/api/tests/submit', { method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`}, body:JSON.stringify(payload)});
+        const data = await response.json();
+        alert('Submitted score: ' + data.score);
+    });
+</script>
