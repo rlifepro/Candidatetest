@@ -1,0 +1,44 @@
+Candidatetest/
+│
+├── BlazorTestPlatform.csproj
+├── Program.cs
+├── appsettings.json        # Add your SQL Server connection string
+│
+├── wwwroot/
+│   ├── css/
+│   │   └── site.css        # Maroon theme + general styles
+│   └── js/
+│       ├── monacoInterop.js
+│       └── animations.js
+│
+├── Data/
+│   ├── ApplicationDbContext.cs
+│   └── Models/
+│       ├── User.cs
+│       ├── Test.cs
+│       ├── Question.cs
+│       ├── Option.cs
+│       ├── Submission.cs
+│       ├── CodingQuestion.cs
+│       └── TestCase.cs
+│
+├── Hubs/
+│   └── LiveResultsHub.cs
+│
+├── Services/
+│   ├── TestService.cs
+│   ├── SubmissionService.cs
+│   ├── SignalRService.cs
+│   └── CodingExecutionService.cs
+│
+├── Pages/
+│   ├── Login.razor
+│   ├── CandidateTest.razor
+│   ├── CodingQuestion.razor
+│   └── AdminDashboard.razor
+│
+└── Components/
+    ├── MCQQuestion.razor
+    ├── Timer.razor
+    ├── ResultModal.razor
+    └── LiveChart.razor
