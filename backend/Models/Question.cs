@@ -5,6 +5,8 @@ namespace CandidateTest.Api.Models
         public int Id { get; set; }
         public int TestId { get; set; }
         public Test? Test { get; set; }
+        public int? QuestionBankId { get; set; }
+        public QuestionBank? QuestionBank { get; set; }
         public string Type { get; set; } = "MCQ"; // MCQ or Coding
         public string Prompt { get; set; } = string.Empty;
         public string[] Choices { get; set; } = Array.Empty<string>();

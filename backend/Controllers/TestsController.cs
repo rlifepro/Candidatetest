@@ -53,7 +53,13 @@ namespace CandidateTest.Api.Controllers
             {
                 CandidateId = request.CandidateId,
                 TestId = request.TestId,
-                Answers = request.Answers,
+                Answers = request.Answers.Select(a => new AnswerItem
+                {
+                    QuestionId = a.QuestionId,
+                    CandidateAnswer = a.CandidateAnswer,
+                    TimeSpentSeconds = a.TimeSpentSeconds,
+                    Correct = false
+                }).ToList(),
                 Score = score,
                 SubmittedAt = DateTime.UtcNow
             };
@@ -83,6 +89,7 @@ namespace CandidateTest.Api.Controllers
                 Duration = TimeSpan.FromMinutes(request.Duration),
                 Questions = request.Questions.Select(q => new Question
                 {
+                    QuestionBankId = q.QuestionBankId,
                     Type = q.Type,
                     Prompt = q.Prompt,
                     Choices = q.Choices?.ToArray() ?? Array.Empty<string>(),
@@ -101,7 +108,14 @@ namespace CandidateTest.Api.Controllers
     {
         public int CandidateId { get; set; }
         public int TestId { get; set; }
-        public List<AnswerItem> Answers { get; set; } = new List<AnswerItem>();
+        public List<AnswerRequest> Answers { get; set; } = new List<AnswerRequest>();
+    }
+
+    public class AnswerRequest
+    {
+        public int QuestionId { get; set; }
+        public string CandidateAnswer { get; set; } = string.Empty;
+        public int TimeSpentSeconds { get; set; }
     }
 
     public class CreateTestRequest
@@ -114,8 +128,7 @@ namespace CandidateTest.Api.Controllers
 
     public class CreateQuestion
     {
-        public string Type { get; set; } = "MCQ";
-        public string Prompt { get; set; } = string.Empty;
+        public int? QuestionBankId { get; set; }
         public List<string>? Choices { get; set; }
         public string Answer { get; set; } = string.Empty;
         public int Points { get; set; } = 1;

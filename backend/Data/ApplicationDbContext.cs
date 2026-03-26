@@ -12,6 +12,7 @@ namespace CandidateTest.Api.Data
         public DbSet<User> Users => Set<User>();
         public DbSet<Test> Tests => Set<Test>();
         public DbSet<Question> Questions => Set<Question>();
+        public DbSet<QuestionBank> QuestionBank => Set<QuestionBank>();
         public DbSet<Submission> Submissions => Set<Submission>();
     }
 }

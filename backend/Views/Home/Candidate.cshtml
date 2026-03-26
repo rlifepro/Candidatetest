@@ -14,6 +14,10 @@
             <button id="submitButton" class="rounded-lg bg-gold px-4 py-2 font-semibold text-maroon">Submit Test</button>
         </div>
     </div>
+    <div class="mt-6 rounded-lg border border-gray-300 bg-white p-4 shadow">
+        <h3 class="mb-2 text-xl font-semibold text-maroon">Result</h3>
+        <div id="resultPanel" class="h-16 rounded-lg border border-dashed border-gray-400 bg-gray-50 p-3 text-center text-lg font-semibold text-gray-700">No result yet</div>
+    </div>
 </div>
 <script>
     const token = localStorage.getItem('authToken');
@@ -21,17 +25,22 @@
     const testId = 1;
 
     const questions = [
-        { id: 1, type: 'MCQ', prompt: 'The capital of France?', choices: ['Paris', 'London', 'Berlin', 'Rome'] },
-        { id: 2, type: 'Coding', prompt: 'Write a function to reverse a string.', code: '' }
+        { id: 1, type: 'MCQ', prompt: 'The capital of France?', choices: ['Paris', 'London', 'Berlin', 'Rome'], maxTimeSeconds: 45, suggestedTimeSeconds: 30 },
+        { id: 2, type: 'Coding', prompt: 'Write a function to reverse a string.', code: '', maxTimeSeconds: 300, suggestedTimeSeconds: 180 }
     ];
 
     const answers = [];
+    const timeSpentByQuestion = {};
     let activeIndex = 0;
+    let questionTimer = null;
 
     function renderQuestion() {
         const q = questions[activeIndex];
         const area = document.getElementById('questionArea');
-        area.innerHTML = `<h3 class="text-xl font-semibold">${q.prompt}</h3>`;
+        area.innerHTML = `<h3 class="text-xl font-semibold">${q.prompt}</h3><div class="mt-2 font-medium">Time used: <span id="questionTime">${formatSeconds(timeSpentByQuestion[q.id] || 0)}</span> / ${formatSeconds(q.maxTimeSeconds)} (max)</div>`;
+
+        if (!timeSpentByQuestion[q.id]) timeSpentByQuestion[q.id] = 0;
+
         if (q.type === 'MCQ') {
             q.choices.forEach(c => {
                 const b = document.createElement('button');
@@ -51,6 +60,31 @@
                 editor.onDidChangeModelContent(() => answers[q.id] = editor.getValue());
             });
         }
+
+        setQuestionTimer(q);
+    }
+
+    function setQuestionTimer(q) {
+        if (questionTimer) clearInterval(questionTimer);
+        questionTimer = setInterval(() => {
+            timeSpentByQuestion[q.id] = (timeSpentByQuestion[q.id] || 0) + 1;
+            document.getElementById('questionTime').textContent = formatSeconds(timeSpentByQuestion[q.id]);
+            if (timeSpentByQuestion[q.id] >= q.maxTimeSeconds) {
+                clearInterval(questionTimer);
+                alert(`Max time reached for question ${q.id}. Moving to next question.`);
+                if (activeIndex < questions.length - 1) {
+                    activeIndex += 1;
+                    renderQuestionList();
+                    renderQuestion();
+                }
+            }
+        }, 1000);
+    }
+
+    function formatSeconds(totalSeconds) {
+        const min = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
+        const sec = (totalSeconds % 60).toString().padStart(2, '0');
+        return `${min}:${sec}`;
     }
 
     function renderQuestionList() {
@@ -59,7 +93,7 @@
         questions.forEach((q, idx) => {
             const button = document.createElement('button');
             button.className = `mb-2 w-full rounded-lg p-3 text-left transition ${idx===activeIndex ? 'bg-maroon text-white':'bg-gray-100 hover:bg-gray-200'}`;
-            button.textContent = `${q.type} #${q.id}`;
+            button.textContent = `${q.type} #${q.id} (${formatSeconds(q.maxTimeSeconds)} max)`;
             button.addEventListener('click', () => { activeIndex = idx; renderQuestion(); renderQuestionList(); });
             list.appendChild(button);
         });
@@ -76,10 +110,48 @@
         document.getElementById('progressBar').style.width = `${(timeLeft/900)*100}%`;
     },1000);
 
+    const resultPanel = document.getElementById('resultPanel');
+
     document.getElementById('submitButton').addEventListener('click', async () => {
-        const payload = { candidateId: userId, testId, answers: Object.entries(answers).filter(x=>x[1]).map(([questionId, answer]) => ({ questionId: Number(questionId), candidateAnswer: answer })) };
-        const response = await fetch('/api/tests/submit', { method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${token}`}, body:JSON.stringify(payload)});
+        const payload = {
+            candidateId: userId,
+            testId,
+            answers: Object.entries(answers)
+                .filter(x => x[1])
+                .map(([questionId, answer]) => ({
+                    questionId: Number(questionId),
+                    candidateAnswer: answer,
+                    timeSpentSeconds: timeSpentByQuestion[Number(questionId)] || 0
+                }))
+        };
+
+        const response = await fetch('/api/tests/submit', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+            resultPanel.textContent = 'Submission failed. Please try again.';
+            resultPanel.classList.add('text-red-600');
+            return;
+        }
+
         const data = await response.json();
-        alert('Submitted score: ' + data.score);
+        resultPanel.textContent = `Score: ${data.score}`;
+        resultPanel.classList.remove('text-gray-700', 'text-red-600');
+        resultPanel.classList.add('text-green-700', 'animate-pulse');
+        setTimeout(() => resultPanel.classList.remove('animate-pulse'), 900);
+
+        // Optional: send to admin via SignalR directly after submit if needed
+        /*
+        fetch('/hubs/live', {
+            method: 'POST',
+            body: JSON.stringify({ event: 'CandidateScoreUpdated', data: { testId, candidateId: userId, score: data.score } })
+        });
+        */
     });
 </script>

@@ -19,5 +19,6 @@ namespace CandidateTest.Api.Models
         public Question? Question { get; set; }
         public string CandidateAnswer { get; set; } = string.Empty;
         public bool Correct { get; set; }
+        public int TimeSpentSeconds { get; set; } = 0;
     }
 }

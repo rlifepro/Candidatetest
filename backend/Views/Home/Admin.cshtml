@@ -13,6 +13,19 @@
             <canvas id="scoreChart" height="200"></canvas>
         </div>
     </div>
+    <div class="mt-6 rounded-2xl border p-4">
+        <h2 class="text-2xl font-semibold">Result History</h2>
+        <table class="min-w-full table-auto text-left text-sm">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="px-3 py-2">Candidate</th>
+                    <th class="px-3 py-2">Score</th>
+                    <th class="px-3 py-2">Submitted At</th>
+                </tr>
+            </thead>
+            <tbody id="resultTableBody"></tbody>
+        </table>
+    </div>
 </div>
 <script>
     const liveList = document.getElementById('liveList');
@@ -29,21 +42,45 @@
 
     const connection = new signalR.HubConnectionBuilder().withUrl('/hubs/live').build();
 
+    const results = [];
+
     connection.on('CandidateScoreUpdated', data => {
         const item = document.createElement('li');
         item.className = 'rounded-lg border p-2';
-        item.textContent = `${data.user ?? data.candidateId} -> ${data.score}`;
+        const candidate = data.user ?? data.candidateId;
+        item.textContent = `${candidate} -> ${data.score}`;
         liveList.prepend(item);
 
-        if (!scoreChart.data.labels.includes(data.user || data.candidateId)) {
-            scoreChart.data.labels.push(data.user || data.candidateId);
+        const existingIndex = results.findIndex(r => r.user === candidate);
+        if (existingIndex >= 0) {
+            results[existingIndex].score = data.score;
+            results[existingIndex].submittedAt = new Date().toLocaleString();
+        } else {
+            results.push({ user: candidate, score: data.score, submittedAt: new Date().toLocaleString() });
+        }
+
+        if (!scoreChart.data.labels.includes(candidate)) {
+            scoreChart.data.labels.push(candidate);
             scoreChart.data.datasets[0].data.push(data.score);
         } else {
-            const idx = scoreChart.data.labels.indexOf(data.user || data.candidateId);
+            const idx = scoreChart.data.labels.indexOf(candidate);
             scoreChart.data.datasets[0].data[idx] = data.score;
         }
         scoreChart.update();
+
+        renderResultTable();
     });
+
+    function renderResultTable() {
+        const tableBody = document.getElementById('resultTableBody');
+        tableBody.innerHTML = '';
+        results.sort((a,b)=>b.score-a.score);
+        results.forEach(row => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `<td class='px-3 py-2'>${row.user}</td><td class='px-3 py-2'>${row.score}</td><td class='px-3 py-2'>${row.submittedAt}</td>`;
+            tableBody.appendChild(tr);
+        });
+    }
 
     connection.start().then(() => connection.invoke('JoinTestGroup', 1)).catch(console.error);
 </script>

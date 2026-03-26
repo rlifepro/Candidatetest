@@ -17,6 +17,13 @@ namespace CandidateTest.Api.Services
                 var question = test.Questions.FirstOrDefault(q => q.Id == item.QuestionId);
                 if (question == null) continue;
 
+                // Apply max-time penalty
+                if (question.QuestionBank != null && item.TimeSpentSeconds > question.QuestionBank.MaxTimeSeconds)
+                {
+                    item.Correct = false;
+                    continue;
+                }
+
                 if (question.Type == "MCQ")
                 {
                     if (string.Equals(question.Answer.Trim(), item.CandidateAnswer.Trim(), StringComparison.OrdinalIgnoreCase))
