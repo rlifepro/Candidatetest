@@ -2,52 +2,338 @@
     ViewData["Title"] = "Admin Dashboard";
 }
 
-<div class="min-h-screen bg-gray-100">
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
     <!-- Navigation Header -->
-    <nav class="bg-white shadow-md">
+    <nav class="bg-white/80 backdrop-blur-lg shadow-xl border-b border-white/20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
-                    <h1 class="text-xl font-bold text-gray-800">Admin Panel</h1>
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                            </svg>
+                        </div>
+                        <h1 class="text-xl font-bold text-gray-800">Admin Panel</h1>
+                    </div>
                 </div>
-                <div class="flex items-center space-x-4">
-                    <a href="/Home/Admin" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Dashboard</a>
-                    <a href="/Home/Candidates" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Manage Candidates</a>
-                    <a href="/Home/Questions" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">Manage Questions</a>
-                    <button onclick="logout()" class="bg-red-600 text-white px-3 py-2 rounded-md text-sm font-medium hover:bg-red-700">Logout</button>
+                <div class="flex items-center space-x-2">
+                    <a href="/Home/Admin" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center space-x-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v2H8V5z"></path>
+                        </svg>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="/Home/Candidates" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center space-x-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+                        </svg>
+                        <span>Candidates</span>
+                    </a>
+                    <a href="/Home/Questions" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center space-x-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        <span>Questions</span>
+                    </a>
+                    <button onclick="logout()" class="bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:from-red-600 hover:to-red-700 transform hover:scale-105 transition-all duration-200 shadow-lg flex items-center space-x-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                        </svg>
+                        <span>Logout</span>
+                    </button>
                 </div>
             </div>
         </div>
     </nav>
 
     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-        <div class="bg-white rounded-lg shadow-md p-6">
-            <h1 class="text-3xl font-bold text-gray-800 mb-6">Admin Dashboard</h1>
-            <div class="grid gap-6 lg:grid-cols-2">
-                <div class="rounded-lg border p-4">
-                    <h2 class="text-xl font-semibold text-gray-700 mb-3">Live Candidate Monitoring</h2>
-                    <ul id="liveList" class="space-y-2 max-h-64 overflow-y-auto"></ul>
+        <!-- Header Section -->
+        <div class="bg-white/80 backdrop-blur-lg rounded-2xl shadow-xl border border-white/20 p-6 mb-6">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-800 mb-2">Admin Dashboard</h1>
+                    <p class="text-gray-600">Monitor candidate progress and manage assessments</p>
                 </div>
-                <div class="rounded-lg border p-4">
-                    <h2 class="text-xl font-semibold text-gray-700 mb-3">Score Chart</h2>
-                    <canvas id="scoreChart" height="200"></canvas>
-                </div>
-            </div>
-            <div class="mt-6 rounded-lg border p-4">
-                <h2 class="text-xl font-semibold text-gray-700 mb-3">Result History</h2>
-                <div class="overflow-x-auto">
-                    <table class="min-w-full table-auto text-left text-sm">
-                        <thead>
-                            <tr class="bg-gray-50">
-                                <th class="px-4 py-2 font-medium text-gray-700">Candidate</th>
-                                <th class="px-4 py-2 font-medium text-gray-700">Score</th>
-                                <th class="px-4 py-2 font-medium text-gray-700">Submitted At</th>
-                            </tr>
-                        </thead>
-                        <tbody id="resultTableBody"></tbody>
-                    </table>
+                <div class="flex items-center space-x-4">
+                    <div class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium flex items-center">
+                        <div class="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></div>
+                        Live Monitoring Active
+                    </div>
                 </div>
             </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="grid gap-6 lg:grid-cols-2 mb-6">
+            <!-- Live Candidate Monitoring -->
+            <div class="bg-white/80 backdrop-blur-lg rounded-2xl shadow-xl border border-white/20 p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-semibold text-gray-800 flex items-center">
+                        <svg class="w-6 h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                        Live Monitoring
+                    </h2>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                        <div class="w-1.5 h-1.5 bg-blue-500 rounded-full mr-1.5 animate-pulse"></div>
+                        Active
+                    </span>
+                </div>
+                <div id="liveList" class="space-y-3 max-h-80 overflow-y-auto">
+                    <div class="text-center text-gray-500 py-8">
+                        <svg class="w-12 h-12 mx-auto mb-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                        </svg>
+                        <p class="text-sm">Waiting for candidate activity...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Score Chart -->
+            <div class="bg-white/80 backdrop-blur-lg rounded-2xl shadow-xl border border-white/20 p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-xl font-semibold text-gray-800 flex items-center">
+                        <svg class="w-6 h-6 mr-2 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                        Score Distribution
+                    </h2>
+                    <div class="flex items-center space-x-2">
+                        <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
+                        <span class="text-xs text-gray-600">Real-time</span>
+                    </div>
+                </div>
+                <div class="relative">
+                    <canvas id="scoreChart" height="250"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Result History -->
+        <div class="bg-white/80 backdrop-blur-lg rounded-2xl shadow-xl border border-white/20 p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-xl font-semibold text-gray-800 flex items-center">
+                    <svg class="w-6 h-6 mr-2 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                    </svg>
+                    Assessment Results
+                </h2>
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-600">
+                        Total Submissions: <span id="totalSubmissions" class="font-semibold text-gray-800">0</span>
+                    </div>
+                    <button onclick="exportResults()" class="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:from-green-600 hover:to-emerald-600 transform hover:scale-105 transition-all duration-200 shadow-lg flex items-center space-x-1">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        <span>Export</span>
+                    </button>
+                </div>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full table-auto text-left text-sm">
+                    <thead>
+                        <tr class="bg-gradient-to-r from-gray-50 to-gray-100">
+                            <th class="px-6 py-3 font-semibold text-gray-800 rounded-tl-lg">Candidate</th>
+                            <th class="px-6 py-3 font-semibold text-gray-800">Score</th>
+                            <th class="px-6 py-3 font-semibold text-gray-800">Status</th>
+                            <th class="px-6 py-3 font-semibold text-gray-800 rounded-tr-lg">Submitted At</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultTableBody" class="divide-y divide-gray-200">
+                        <!-- Results will be populated here -->
+                    </tbody>
+                </table>
+                <div id="emptyState" class="text-center py-12">
+                    <svg class="w-16 h-16 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                    </svg>
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">No results yet</h3>
+                    <p class="text-gray-600">Assessment results will appear here as candidates complete their tests.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function logout() {
+        localStorage.removeItem('token');
+        window.location.href = '/Home/Index';
+    }
+
+    function exportResults() {
+        alert('Export functionality will be implemented');
+    }
+
+    const liveList = document.getElementById('liveList');
+    const ctx = document.getElementById('scoreChart').getContext('2d');
+
+    const scoreChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Score (%)',
+                data: [],
+                backgroundColor: 'rgba(59, 130, 246, 0.8)',
+                borderColor: 'rgba(59, 130, 246, 1)',
+                borderWidth: 1,
+                borderRadius: 4,
+                borderSkipped: false,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    max: 100,
+                    min: 0,
+                    ticks: {
+                        stepSize: 10,
+                        callback: function(value) {
+                            return value + '%';
+                        }
+                    },
+                    grid: {
+                        color: 'rgba(0, 0, 0, 0.1)'
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return context.parsed.y + '% score';
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    const connection = new signalR.HubConnectionBuilder().withUrl('/hubs/live').build();
+
+    const results = [];
+
+    connection.on('CandidateScoreUpdated', data => {
+        const item = document.createElement('li');
+        item.className = 'flex items-center justify-between p-3 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200';
+        const candidate = data.user ?? data.candidateId;
+        item.innerHTML = `
+            <div class="flex items-center">
+                <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center mr-3">
+                    <span class="text-white text-xs font-bold">${candidate.charAt(0).toUpperCase()}</span>
+                </div>
+                <div>
+                    <p class="font-medium text-gray-800">${candidate}</p>
+                    <p class="text-xs text-gray-600">Just submitted</p>
+                </div>
+            </div>
+            <div class="text-right">
+                <p class="text-lg font-bold text-blue-600">${data.score}%</p>
+            </div>
+        `;
+        liveList.insertBefore(item, liveList.firstChild);
+
+        // Keep only last 10 items
+        while (liveList.children.length > 10) {
+            liveList.removeChild(liveList.lastChild);
+        }
+
+        // Remove empty state if it exists
+        const emptyState = liveList.querySelector('.text-center');
+        if (emptyState) emptyState.remove();
+
+        const existingIndex = results.findIndex(r => r.user === candidate);
+        if (existingIndex >= 0) {
+            results[existingIndex].score = data.score;
+            results[existingIndex].submittedAt = new Date().toLocaleString();
+        } else {
+            results.push({
+                user: candidate,
+                score: data.score,
+                submittedAt: new Date().toLocaleString(),
+                status: data.score >= 70 ? 'Passed' : 'Needs Review'
+            });
+        }
+
+        if (!scoreChart.data.labels.includes(candidate)) {
+            scoreChart.data.labels.push(candidate);
+            scoreChart.data.datasets[0].data.push(data.score);
+        } else {
+            const idx = scoreChart.data.labels.indexOf(candidate);
+            scoreChart.data.datasets[0].data[idx] = data.score;
+        }
+        scoreChart.update();
+
+        renderResultTable();
+    });
+
+    function renderResultTable() {
+        const tableBody = document.getElementById('resultTableBody');
+        const emptyState = document.getElementById('emptyState');
+        const totalSubmissions = document.getElementById('totalSubmissions');
+
+        if (results.length === 0) {
+            tableBody.innerHTML = '';
+            emptyState.style.display = 'block';
+            totalSubmissions.textContent = '0';
+            return;
+        }
+
+        emptyState.style.display = 'none';
+        totalSubmissions.textContent = results.length;
+
+        tableBody.innerHTML = '';
+        results.sort((a, b) => b.score - a.score);
+        results.forEach(row => {
+            const tr = document.createElement('tr');
+            tr.className = 'hover:bg-gray-50 transition-colors duration-200';
+            tr.innerHTML = `
+                <td class='px-6 py-4'>
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mr-3">
+                            <span class="text-white text-xs font-bold">${row.user.charAt(0).toUpperCase()}</span>
+                        </div>
+                        <span class="font-medium text-gray-900">${row.user}</span>
+                    </div>
+                </td>
+                <td class='px-6 py-4'>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                        row.score >= 80 ? 'bg-green-100 text-green-800' :
+                        row.score >= 60 ? 'bg-yellow-100 text-yellow-800' :
+                        'bg-red-100 text-red-800'
+                    }">
+                        ${row.score}%
+                    </span>
+                </td>
+                <td class='px-6 py-4'>
+                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                        row.status === 'Passed' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                    }">
+                        ${row.status}
+                    </span>
+                </td>
+                <td class='px-6 py-4 text-sm text-gray-600'>${row.submittedAt}</td>
+            `;
+            tableBody.appendChild(tr);
+        });
+    }
+
+    connection.start().then(() => connection.invoke('JoinTestGroup', 1)).catch(console.error);
+</script>
         </div>
     </div>
 </div>

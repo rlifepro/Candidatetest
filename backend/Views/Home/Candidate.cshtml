@@ -1,26 +1,88 @@
 @{
     ViewData["Title"] = "Candidate Test";
 }
-<div class="mx-auto max-w-5xl rounded-2xl bg-white p-6 shadow-xl">
-    <h2 class="text-3xl font-bold text-maroon">Candidate Test</h2>
-    <div class="my-4 rounded-lg border p-4">
-        <p class="text-lg">Time Remaining: <span id="timeLabel" class="font-bold">15:00</span></p>
-        <div class="h-4 w-full rounded-full bg-gray-200"><div id="progressBar" class="h-full rounded-full bg-maroon" style="width:100%"></div></div>
-    </div>
-    <div class="grid gap-4 md:grid-cols-3">
-        <div class="md:col-span-1" id="questionList"></div>
-        <div class="md:col-span-2">
-            <div id="questionArea" class="mb-3 rounded-lg border p-4"></div>
-            <button id="submitButton" class="rounded-lg bg-gold px-4 py-2 font-semibold text-maroon">Submit Test</button>
+
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 p-4">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <div class="bg-white/80 backdrop-blur-lg rounded-2xl shadow-xl border border-white/20 p-6 mb-6">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-800 mb-2">Candidate Assessment</h1>
+                    <p class="text-gray-600">Complete the questions below within the time limit</p>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="text-right">
+                        <p class="text-sm text-gray-600">Time Remaining</p>
+                        <p id="timeLabel" class="text-2xl font-bold text-blue-600">15:00</p>
+                    </div>
+                    <div class="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
+                        <div id="progressBar" class="h-full bg-gradient-to-r from-blue-500 to-purple-600 rounded-full transition-all duration-1000 ease-out" style="width:100%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <!-- Question Navigation -->
+            <div class="lg:col-span-1">
+                <div class="bg-white/80 backdrop-blur-lg rounded-2xl shadow-xl border border-white/20 p-4 sticky top-4">
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                        <svg class="w-5 h-5 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                        </svg>
+                        Questions
+                    </h3>
+                    <div id="questionList" class="space-y-2"></div>
+                </div>
+            </div>
+
+            <!-- Question Area -->
+            <div class="lg:col-span-3">
+                <div class="bg-white/80 backdrop-blur-lg rounded-2xl shadow-xl border border-white/20 p-6">
+                    <div id="questionArea" class="mb-6"></div>
+
+                    <!-- Submit Button -->
+                    <div class="flex justify-between items-center">
+                        <div class="text-sm text-gray-600">
+                            Progress: <span id="progressText" class="font-medium">0/0</span> questions answered
+                        </div>
+                        <button id="submitButton" class="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-8 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none">
+                            <span class="flex items-center">
+                                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                Submit Test
+                            </span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Result Panel -->
+                <div class="bg-white/80 backdrop-blur-lg rounded-2xl shadow-xl border border-white/20 p-6 mt-6">
+                    <h3 class="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+                        <svg class="w-6 h-6 mr-2 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                        Your Result
+                    </h3>
+                    <div id="resultPanel" class="min-h-[4rem] rounded-xl border-2 border-dashed border-gray-300 bg-gradient-to-r from-gray-50 to-gray-100 p-4 text-center flex items-center justify-center">
+                        <div class="text-gray-500">
+                            <svg class="w-8 h-8 mx-auto mb-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                            </svg>
+                            <p class="text-lg font-medium">Complete the test to see your results</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="mt-6 rounded-lg border border-gray-300 bg-white p-4 shadow">
-        <h3 class="mb-2 text-xl font-semibold text-maroon">Result</h3>
-        <div id="resultPanel" class="h-16 rounded-lg border border-dashed border-gray-400 bg-gray-50 p-3 text-center text-lg font-semibold text-gray-700">No result yet</div>
-    </div>
 </div>
+
 <script>
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem('token');
     const userId = Number(localStorage.getItem('userId')) || 0;
     const testId = 1;
 
@@ -37,31 +99,86 @@
     function renderQuestion() {
         const q = questions[activeIndex];
         const area = document.getElementById('questionArea');
-        area.innerHTML = `<h3 class="text-xl font-semibold">${q.prompt}</h3><div class="mt-2 font-medium">Time used: <span id="questionTime">${formatSeconds(timeSpentByQuestion[q.id] || 0)}</span> / ${formatSeconds(q.maxTimeSeconds)} (max)</div>`;
+
+        area.innerHTML = `
+            <div class="mb-6">
+                <div class="flex items-center justify-between mb-4">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${q.type === 'MCQ' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800'}">
+                        ${q.type === 'MCQ' ? '📝' : '💻'} ${q.type} Question
+                    </span>
+                    <div class="text-sm text-gray-600">
+                        Question ${activeIndex + 1} of ${questions.length}
+                    </div>
+                </div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-4 leading-tight">${q.prompt}</h3>
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                    <div class="flex items-center text-sm text-blue-700">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        Time used: <span id="questionTime" class="font-semibold">${formatSeconds(timeSpentByQuestion[q.id] || 0)}</span> / ${formatSeconds(q.maxTimeSeconds)} (max)
+                    </div>
+                </div>
+            </div>
+        `;
 
         if (!timeSpentByQuestion[q.id]) timeSpentByQuestion[q.id] = 0;
 
         if (q.type === 'MCQ') {
-            q.choices.forEach(c => {
-                const b = document.createElement('button');
-                b.className = 'mt-2 w-full rounded-lg border p-2 text-left hover:bg-gray-100';
-                b.textContent = c;
-                b.addEventListener('click', () => {
-                    answers[q.id] = c;
-                    document.querySelectorAll('#questionArea button').forEach(x => x.classList.remove('bg-maroon', 'text-white')); b.classList.add('bg-maroon', 'text-white');
+            const optionsContainer = document.createElement('div');
+            optionsContainer.className = 'space-y-3';
+            q.choices.forEach((choice, index) => {
+                const button = document.createElement('button');
+                button.className = 'w-full p-4 text-left rounded-xl border-2 border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent group';
+                button.innerHTML = `
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 w-8 h-8 rounded-full border-2 border-gray-300 group-hover:border-blue-400 flex items-center justify-center mr-4 transition-colors">
+                            <span class="text-sm font-medium text-gray-500 group-hover:text-blue-600">${String.fromCharCode(65 + index)}</span>
+                        </div>
+                        <span class="text-gray-700 group-hover:text-blue-800 font-medium">${choice}</span>
+                    </div>
+                `;
+                button.addEventListener('click', () => {
+                    answers[q.id] = choice;
+                    // Update UI to show selection
+                    document.querySelectorAll('#questionArea button').forEach(btn => {
+                        btn.classList.remove('border-blue-500', 'bg-blue-50', 'ring-2', 'ring-blue-500');
+                        btn.classList.add('border-gray-200', 'hover:border-blue-300');
+                    });
+                    button.classList.remove('border-gray-200', 'hover:border-blue-300');
+                    button.classList.add('border-blue-500', 'bg-blue-50', 'ring-2', 'ring-blue-500');
                 });
-                area.appendChild(b);
+                optionsContainer.appendChild(button);
             });
+            area.appendChild(optionsContainer);
         } else {
-            area.innerHTML += '<div id="monaco" style="height:320px;border:1px solid #ddd;margin-top:10px"></div>';
+            const codeContainer = document.createElement('div');
+            codeContainer.innerHTML = `
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Your Code:</label>
+                    <div id="monaco" style="height:400px;border:1px solid #e5e7eb;border-radius:0.75rem;overflow:hidden"></div>
+                </div>
+            `;
+            area.appendChild(codeContainer);
+
             require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.1/min/vs' } });
             require(['vs/editor/editor.main'], function () {
-                const editor = monaco.editor.create(document.getElementById('monaco'), { value: q.code || '// start writing', language: 'javascript', theme: 'vs-dark' });
+                const editor = monaco.editor.create(document.getElementById('monaco'), {
+                    value: q.code || '// Write your solution here\nfunction reverseString(str) {\n    // Your code here\n}',
+                    language: 'javascript',
+                    theme: 'vs-light',
+                    fontSize: 14,
+                    minimap: { enabled: false },
+                    scrollBeyondLastLine: false,
+                    automaticLayout: true,
+                    wordWrap: 'on'
+                });
                 editor.onDidChangeModelContent(() => answers[q.id] = editor.getValue());
             });
         }
 
         setQuestionTimer(q);
+        updateProgress();
     }
 
     function setQuestionTimer(q) {
@@ -71,7 +188,7 @@
             document.getElementById('questionTime').textContent = formatSeconds(timeSpentByQuestion[q.id]);
             if (timeSpentByQuestion[q.id] >= q.maxTimeSeconds) {
                 clearInterval(questionTimer);
-                alert(`Max time reached for question ${q.id}. Moving to next question.`);
+                showNotification(`Time's up for question ${q.id + 1}!`, 'warning');
                 if (activeIndex < questions.length - 1) {
                     activeIndex += 1;
                     renderQuestionList();
@@ -91,13 +208,165 @@
         const list = document.getElementById('questionList');
         list.innerHTML = '';
         questions.forEach((q, idx) => {
+            const answered = answers[q.id] !== undefined;
+            const isActive = idx === activeIndex;
             const button = document.createElement('button');
-            button.className = `mb-2 w-full rounded-lg p-3 text-left transition ${idx===activeIndex ? 'bg-maroon text-white':'bg-gray-100 hover:bg-gray-200'}`;
-            button.textContent = `${q.type} #${q.id} (${formatSeconds(q.maxTimeSeconds)} max)`;
-            button.addEventListener('click', () => { activeIndex = idx; renderQuestion(); renderQuestionList(); });
+            button.className = `w-full p-3 rounded-xl text-left transition-all duration-200 flex items-center justify-between ${
+                isActive
+                    ? 'bg-blue-600 text-white shadow-lg transform scale-105'
+                    : answered
+                        ? 'bg-green-100 text-green-800 border-2 border-green-300 hover:bg-green-200'
+                        : 'bg-white text-gray-700 border-2 border-gray-200 hover:bg-gray-50 hover:border-gray-300'
+            }`;
+            button.innerHTML = `
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center mr-3 text-sm font-bold ${
+                        isActive ? 'bg-white text-blue-600' : answered ? 'bg-green-600 text-white' : 'bg-gray-300 text-gray-600'
+                    }">
+                        ${idx + 1}
+                    </div>
+                    <div>
+                        <div class="font-medium">${q.type}</div>
+                        <div class="text-xs opacity-75">${formatSeconds(q.maxTimeSeconds)} max</div>
+                    </div>
+                </div>
+                ${answered ? '<svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>' : ''}
+            `;
+            button.addEventListener('click', () => {
+                activeIndex = idx;
+                renderQuestion();
+                renderQuestionList();
+            });
             list.appendChild(button);
         });
     }
+
+    function updateProgress() {
+        const answeredCount = Object.keys(answers).length;
+        document.getElementById('progressText').textContent = `${answeredCount}/${questions.length}`;
+    }
+
+    function showNotification(message, type = 'info') {
+        const notification = document.createElement('div');
+        notification.className = `fixed top-4 right-4 z-50 p-4 rounded-xl shadow-lg transform translate-x-full transition-transform duration-300 ${
+            type === 'warning' ? 'bg-yellow-500 text-white' : 'bg-blue-500 text-white'
+        }`;
+        notification.innerHTML = `
+            <div class="flex items-center">
+                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                </svg>
+                ${message}
+            </div>
+        `;
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+            notification.classList.remove('translate-x-full');
+        }, 100);
+
+        setTimeout(() => {
+            notification.classList.add('translate-x-full');
+            setTimeout(() => notification.remove(), 300);
+        }, 3000);
+    }
+
+    renderQuestionList();
+    renderQuestion();
+
+    let timeLeft = 900;
+    const timerInterval = setInterval(() => {
+        timeLeft = Math.max(timeLeft - 1, 0);
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = (timeLeft % 60).toString().padStart(2, '0');
+        document.getElementById('timeLabel').textContent = `${minutes}:${seconds}`;
+        document.getElementById('progressBar').style.width = `${(timeLeft / 900) * 100}%`;
+
+        if (timeLeft <= 300) { // Last 5 minutes
+            document.getElementById('timeLabel').classList.add('text-red-600', 'animate-pulse');
+        }
+
+        if (timeLeft === 0) {
+            clearInterval(timerInterval);
+            document.getElementById('submitButton').click();
+        }
+    }, 1000);
+
+    const resultPanel = document.getElementById('resultPanel');
+
+    document.getElementById('submitButton').addEventListener('click', async () => {
+        const submitBtn = document.getElementById('submitButton');
+        const originalHTML = submitBtn.innerHTML;
+
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `
+            <svg class="animate-spin w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            Submitting...
+        `;
+
+        const payload = {
+            candidateId: userId,
+            testId,
+            answers: Object.entries(answers)
+                .filter(x => x[1])
+                .map(([questionId, answer]) => ({
+                    questionId: Number(questionId),
+                    candidateAnswer: answer,
+                    timeSpentSeconds: timeSpentByQuestion[Number(questionId)] || 0
+                }))
+        };
+
+        try {
+            const response = await fetch('/api/tests/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                throw new Error('Submission failed. Please try again.');
+            }
+
+            const data = await response.json();
+
+            resultPanel.innerHTML = `
+                <div class="text-center">
+                    <div class="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
+                        <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-bold text-green-800 mb-2">Test Completed!</h3>
+                    <p class="text-lg text-gray-700">Your Score: <span class="font-bold text-green-600">${data.score}%</span></p>
+                    <p class="text-sm text-gray-600 mt-2">Thank you for completing the assessment</p>
+                </div>
+            `;
+            resultPanel.classList.remove('border-dashed', 'border-gray-300', 'from-gray-50', 'to-gray-100');
+            resultPanel.classList.add('bg-green-50', 'border-green-200');
+
+            clearInterval(timerInterval);
+            showNotification('Test submitted successfully!', 'success');
+
+        } catch (error) {
+            resultPanel.innerHTML = `
+                <div class="text-center text-red-600">
+                    <svg class="w-8 h-8 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <p class="font-medium">${error.message}</p>
+                </div>
+            `;
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalHTML;
+        }
+    });
+</script>
 
     renderQuestionList();
     renderQuestion();
