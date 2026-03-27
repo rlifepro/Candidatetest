@@ -1,0 +1,107 @@
+@{
+    ViewData["Title"] = "Manage Candidates";
+}
+
+<div class="min-h-screen bg-gray-100 p-6">
+    <div class="max-w-4xl mx-auto">
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <h1 class="text-2xl font-bold text-gray-800 mb-4">Manage Candidates</h1>
+
+            <!-- Invite Form -->
+            <div class="mb-6">
+                <h2 class="text-lg font-semibold text-gray-700 mb-3">Invite New Candidate</h2>
+                <form id="inviteForm" class="space-y-4">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+                        <input type="text" id="name" name="name" required
+                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                        <input type="email" id="email" name="email" required
+                               class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                        Send Invitation
+                    </button>
+                </form>
+            </div>
+
+            <!-- Candidates List -->
+            <div>
+                <h2 class="text-lg font-semibold text-gray-700 mb-3">Existing Candidates</h2>
+                <div id="candidatesList" class="space-y-2">
+                    <!-- Candidates will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="text-center">
+            <a href="/Home/Admin" class="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700">Back to Admin Dashboard</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    const token = localStorage.getItem('token');
+
+    // Load candidates
+    async function loadCandidates() {
+        try {
+            const response = await fetch('/api/candidate', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            if (response.ok) {
+                const candidates = await response.json();
+                const list = document.getElementById('candidatesList');
+                list.innerHTML = candidates.map(c => `
+                    <div class="flex justify-between items-center p-3 bg-gray-50 rounded-md">
+                        <div>
+                            <p class="font-medium">${c.name}</p>
+                            <p class="text-sm text-gray-600">${c.email}</p>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        } catch (error) {
+            console.error('Error loading candidates:', error);
+        }
+    }
+
+    // Handle invite form
+    document.getElementById('inviteForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const data = {
+            name: formData.get('name'),
+            email: formData.get('email')
+        };
+
+        try {
+            const response = await fetch('/api/candidate/invite', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                alert('Invitation sent successfully!');
+                e.target.reset();
+                loadCandidates();
+            } else {
+                const error = await response.text();
+                alert('Error: ' + error);
+            }
+        } catch (error) {
+            console.error('Error sending invitation:', error);
+            alert('Error sending invitation');
+        }
+    });
+
+    // Load candidates on page load
+    loadCandidates();
+</script>

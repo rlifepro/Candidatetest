@@ -7,5 +7,7 @@ namespace CandidateTest.Api.Controllers
         public IActionResult Index() => View();
         public IActionResult Candidate() => View();
         public IActionResult Admin() => View();
+        public IActionResult Candidates() => View();
+        public IActionResult Questions() => View();
     }
 }

@@ -24,6 +24,15 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddSignalR();
 
 builder.Services.AddScoped<IScoreCalculator, ScoreCalculator>();
+builder.Services.AddScoped<EmailService>(sp =>
+{
+    var config = sp.GetRequiredService<IConfiguration>();
+    var smtpServer = config["Smtp:Server"];
+    var smtpPort = int.Parse(config["Smtp:Port"]);
+    var smtpUsername = config["Smtp:Username"];
+    var smtpPassword = config["Smtp:Password"];
+    return new EmailService(smtpServer, smtpPort, smtpUsername, smtpPassword);
+});
 
 var jwtSecret = builder.Configuration["Jwt:Secret"] ?? "change_this_secret";
 var key = Encoding.ASCII.GetBytes(jwtSecret);

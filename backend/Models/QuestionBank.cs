@@ -3,15 +3,14 @@ namespace CandidateTest.Api.Models
     public class QuestionBank
     {
         public int Id { get; set; }
-        public string Title { get; set; } = string.Empty;
-        public string Category { get; set; } = string.Empty;
-        public string Type { get; set; } = "MCQ";
-        public string Prompt { get; set; } = string.Empty;
-        public string[] Choices { get; set; } = Array.Empty<string>();
-        public string Answer { get; set; } = string.Empty;
-        public int Points { get; set; } = 1;
-        public int SuggestedTimeSeconds { get; set; } = 60;
-        public int MaxTimeSeconds { get; set; } = 300; // hard maximum allowed for this question
+        public string QuestionText { get; set; } = string.Empty;
+        public string QuestionType { get; set; } = "MCQ"; // MCQ or Coding
+        public string TestType { get; set; } = string.Empty; // e.g., Java, .Net, General
+        public string? Options { get; set; } // Pipe-separated for MCQ
+        public int? CorrectAnswer { get; set; } // 1-based index for MCQ
+        public string? CodeSnippet { get; set; } // For coding questions
+        public string? ExpectedOutput { get; set; } // For coding questions
+        public int TimeLimit { get; set; } = 60; // seconds
         public List<Question>? Questions { get; set; }
     }
 }

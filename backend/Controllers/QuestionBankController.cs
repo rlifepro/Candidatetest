@@ -50,15 +50,14 @@ namespace CandidateTest.Api.Controllers
             var q = await _db.QuestionBank.FindAsync(id);
             if (q == null) return NotFound();
 
-            q.Title = request.Title;
-            q.Category = request.Category;
-            q.Type = request.Type;
-            q.Prompt = request.Prompt;
-            q.Choices = request.Choices;
-            q.Answer = request.Answer;
-            q.Points = request.Points;
-            q.SuggestedTimeSeconds = request.SuggestedTimeSeconds;
-            q.MaxTimeSeconds = request.MaxTimeSeconds;
+            q.QuestionText = request.QuestionText;
+            q.QuestionType = request.QuestionType;
+            q.TestType = request.TestType;
+            q.Options = request.Options;
+            q.CorrectAnswer = request.CorrectAnswer;
+            q.CodeSnippet = request.CodeSnippet;
+            q.ExpectedOutput = request.ExpectedOutput;
+            q.TimeLimit = request.TimeLimit;
 
             await _db.SaveChangesAsync();
             return NoContent();

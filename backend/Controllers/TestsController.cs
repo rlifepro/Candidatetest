@@ -31,13 +31,22 @@ namespace CandidateTest.Api.Controllers
             return Ok(tests);
         }
 
-        [HttpGet("{id}")]
-        [Authorize]
-        public async Task<IActionResult> GetTest(int id)
+        [HttpGet("questions/{testType}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetQuestionsByType(string testType)
         {
-            var test = await _db.Tests.Include(t => t.Questions).FirstOrDefaultAsync(t => t.Id == id);
-            if (test == null) return NotFound();
-            return Ok(test);
+            var questions = await _db.QuestionBanks
+                .Where(q => q.TestType == testType)
+                .Select(q => new
+                {
+                    q.Id,
+                    q.QuestionText,
+                    q.QuestionType,
+                    q.TimeLimit
+                })
+                .ToListAsync();
+
+            return Ok(questions);
         }
 
         [HttpPost("submit")]
@@ -86,6 +95,7 @@ namespace CandidateTest.Api.Controllers
             {
                 Title = request.Title,
                 Description = request.Description,
+                TestType = request.TestType,
                 Duration = TimeSpan.FromMinutes(request.Duration),
                 Questions = request.Questions.Select(q => new Question
                 {
@@ -122,6 +132,7 @@ namespace CandidateTest.Api.Controllers
     {
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
+        public string TestType { get; set; } = string.Empty;
         public int Duration { get; set; }
         public List<CreateQuestion> Questions { get; set; } = new();
     }
